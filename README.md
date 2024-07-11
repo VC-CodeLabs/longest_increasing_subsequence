@@ -25,7 +25,7 @@ Output: 1
  
 
 **Scoring**</br>
-- Solutions must pass all provided test cases, including edge cases.
+- Solutions must pass all test cases, including edge cases; tests used for grading/scoring may not be the same tests provided as examples.
  Fast execution times will be rewarded, but solutions must, first and foremost, be correct and complete.
 - The fastest solution from each of the top three languages will be considered if more than three languages are submitted.
 
