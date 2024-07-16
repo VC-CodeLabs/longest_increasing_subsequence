@@ -31,20 +31,33 @@ def get_sequences():
     return seq
 
 
-def get_lis(seq, pre=[]):
-    if len(seq) == 0:
-        return pre
-    if len(seq) == 1:
-        if len(pre) > 0 and seq[0] <= pre[-1]:
-            return pre
+def get_lis(sequence, prefix=[]):
+    """
+        get_lis uses recursion to get the longest increasing subsequence of an integer sequence
+
+        :param sequence: the sequence to find a longest increasing subsequence of
+        :param prefix: prefix subsequence, used in the recursive case, for building increasing subsequences
+    """
+    # Base cases
+    if len(sequence) == 0:
+        return prefix
+    if len(sequence) == 1:
+        if len(prefix) > 0 and sequence[0] <= prefix[-1]:
+            return prefix
         else:
-            return pre + [seq[0]]
-        # return pre if len(pre) > 0 and seq[0] <= pre[-1] else pre + [seq[0]]
-    if len(pre) > 0 and seq[0] <= pre[-1]:
-        return max([get_lis(seq[1:], pre), get_lis(seq[1:]), get_lis(seq[1:], [seq[0]])], key=len)
+            return prefix + [sequence[0]]
+
+    # Recursive cases
+    if len(prefix) > 0 and sequence[0] <= prefix[-1]:
+        # the first element is too low to be appended to the prefix,
+        # but may (but doesn't need to) start its own prefix
+        return max([get_lis(sequence[1:], prefix),
+                    get_lis(sequence[1:]),
+                    get_lis(sequence[1:], [sequence[0]])], key=len)
     else:
-        return max([get_lis(seq[1:], pre + [seq[0]]), get_lis(seq[1:], pre)], key=len)
-    # return max([get_lis(seq[1:], pre if len(pre) > 0 and seq[0] <= pre[-1] else pre + [seq[0]]), get_lis(seq[1:])], key=len)
+        # the first element may (but doesn't need to) be added to the prefix
+        return max([get_lis(sequence[1:], prefix + [sequence[0]]),
+                    get_lis(sequence[1:], prefix)], key=len)
 
 
 def main():
