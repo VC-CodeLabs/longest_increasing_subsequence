@@ -25,26 +25,14 @@ def get_sequences():
     seq.append([10, 22, 9, 33, 21, 50, 41, 60, 80])
     seq.append([3, 4, -1, 0, 6, 2, 3])
     seq.append([4, 10, 4, 3, 8, 9])
+    seq.append([4, -13, 10, -12, -11, 4, 3, 8, -10, 9, 22, -9, -30, -8, 33, -29, 21, 50, -7, -6, 41, 60, -5, 80])
     return seq
 
 
-def get_lis_length(sequence, min_value=MIN):
-    if len(sequence) < 1:
-        return 0
-    elif len(sequence) == 1:
-        if sequence[0] <= min_value:
-            return 0
-        else:
-            return 1
-    # elif len(sequence) == 2:
-    #     if sequence[0] <= min_value:
-    #         return 1
-    #     else:
-    #         return 2
-    if sequence[0] <= min_value:
-        return max(get_lis_length(sequence[1:], min_value), get_lis_length(sequence[1:], sequence[0]))
-    else:
-        return max(get_lis_length(sequence[1:], min_value), 1 + get_lis_length(sequence[1:], sequence[0]))
+def get_lis(seq, pre=[]):
+    if len(seq) == 0:
+        return pre
+    return max([get_lis(seq[1:], pre if len(pre) > 0 and seq[0] <= pre[-1] else pre + [seq[0]]), get_lis(seq[1:])], key=len)
 
 
 def main():
@@ -52,8 +40,8 @@ def main():
         print(f"Test L I S algorithm")
     sequences = get_sequences()
     for sequence in sequences:
-        #lis = get_lis_length(sequence)
-        print(f"Sequence: {sequence}. lis length = {get_lis_length(sequence)}")
+        lis = get_lis(sequence)
+        print(f"Sequence: {sequence}. lis = {lis} length = {len(lis)}")
 
 
 if __name__ == "__main__":
