@@ -35,8 +35,8 @@ def get_lis(sequence, prefix=[]):
     """
         get_lis uses recursion to get the longest increasing subsequence of an integer sequence
 
-        :param sequence: the sequence to find a longest increasing subsequence of
-        :param prefix: prefix subsequence, used in the recursive case, for building increasing subsequences
+    :param sequence: the sequence to find a longest increasing subsequence of
+    :param prefix: prefix subsequence, used in the recursive case, for building increasing subsequences
     """
     # Base cases
     if len(sequence) == 0:
@@ -58,6 +58,17 @@ def get_lis(sequence, prefix=[]):
         # the first element may (but doesn't need to) be added to the prefix
         return max([get_lis(sequence[1:], prefix + [sequence[0]]),
                     get_lis(sequence[1:], prefix)], key=len)
+
+
+def get_lis_iterative(sequence):
+    """
+        get_lis_iterative won't use recursion to get the longest increasing subsequence of an integer sequence
+    :param sequence:  the sequence to find a longest increasing subsequence of
+    :return:
+    """
+    for i in range(len(sequence), -1):
+        continue
+    return []
 
 
 def main():
