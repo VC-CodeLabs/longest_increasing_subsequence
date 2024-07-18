@@ -4,6 +4,7 @@
     Given an integer array nums, return the length of the longest strictly increasing subsequence .
 """
 import time
+import sys
 
 debug = True
 MIN = -10001
@@ -33,17 +34,26 @@ def get_sequences():
     seq.append(
         [8, -26, 20, -24, -22, 8, 6, 16, -20, 18, -10, -9, -22, 9, 8, -33, -21, -50, 7, 6, -41, -60, 5, -80, 1, 1, 11,
          14, 10, 1, 5, 2, 6, 15, 14, 2, 15, 4, 1, 4, 11, 7, 6, 15, 16, 17, 18, 19, 3, 3, 4, -13, 10, -12, -11, 4, 3, 8, -10, 9])
+    seq.append([8, -26, 20, -24, -22, 8, 6, 16, -20, 18, 44, -18, -16, 66, 42, 100, -14, -12, 82, 120, -10, 160, -4, 13, -10, 12, 11, -4, -3, -8, 10, -9, -22, 9, 8, -33, -21, -50, 7, 6, -41, -60, 5, -80, 1, 1, 11, 14])
 
-    # seq.append([8, -26, 20, -24, -22, 8, 6, 16, -20, 18, 44, -18, -16, 66, 42, 100, -14, -12, 82, 120, -10, 160, -4, 13, -10, 12, 11, -4, -3, -8, 10, -9, -22, 9, 8, -33, -21, -50, 7, 6, -41, -60, 5, -80, 1, 1, 11, 14, 10, 1, 5, 2, 6, 15, 14, 2, 15, 4, 1, 4, 11, 7, 6, 15, 3, 3, 4, -13, 10, -12, -11, 4, 3, 8, -10, 9, 22, -9, -8, 33, 21, 50, -7, -6, 41, 60, -5, 80])
-    # a = [8, -26, 20, -24, -22, 8, 6, 16, -20, 18, 44, -18, -16, 66, 42, 100, -14, -12, 82, 120, -10, 160, -4, 13, -10, 12, 11, -4, -3, -8, 10, -9, -22, 9, 8, -33, -21, -50, 7, 6, -41, -60, 5, -80, 1, 1, 11, 14, 10, 1, 5, 2, 6, 15, 14, 2, 15, 4, 1, 4, 11, 7, 6, 15, 3, 3, 4, -13, 10, -12, -11, 4, 3, 8, -10, 9, 22, -9, -8, 33, 21, 50, -7, -6, 41, 60, -5, 80]
-    # seq.append([b - 12 for b in a] + a)
-    # seq.append([b - 12 for b in a] + a + [b + 12 for b in a])
+    seq.append([8, -26, 20, -24, -22, 8, 6, 16, -20, 18, 44, -18, -16, 66, 42, 100, -14, -12, 82, 120, -10, 160, -4, 13, -10, 12, 11, -4, -3, -8, 10, -9, -22, 9, 8, -33, -21, -50, 7, 6, -41, -60, 5, -80, 1, 1, 11, 14, 10, 1, 5, 2, 6, 15, 14, 2, 15, 4, 1, 4, 11])
+    seq.append([8, -26, 20, -24, -22, 8, 6, 16, -20, 18, 44, -18, -16, 66, 42, 100, -14, -12, 82, 120, -10, 160, -4, 13, -10, 12, 11, -4, -3, -8, 10, -9, -22, 9, 8, -33, -21, -50, 7, 6, -41, -60, 5, -80, 1, 1, 11, 14, 10, 1, 5, 2, 6, 15, 14, 2, 16, 4, 1, 4, 17, 7, 6, 15, 3, 3, 18, -13, 10])
+    seq.append([8, -26, 20, -24, -22, 8, 6, 16, -20, 18, 44, -18, -16, 66, 42, 100, -14, -12, 82, 120, -10, 160, -4, 13, -10, 12, 11, -4, -3, -8, 10, -9, -22, 9, 8, -33, -21, -50, 7, 6, -41, -60, 5, -80, 1, 1, 11, 14, 10, 1, 5, 2, 6, 15, 14, 2, 16, 4, 1, 4, 17, 7, 6, 15, 3, 3, 18, -13, 10, 41, 60, -5, 80])
+    seq.append([8, -26, 20, -24, -22, 8, 6, 16, -20, 18, 44, -18, -16, 66, 42, 100, -14, -12, 82, 120, -10, 160, -4, 13, -10, 12, 11, -4, -3, -8, 10, -9, -22, 9, 8, -33, -21, -50, 7, 6, -41, -60, 5, -80, 1, 1, 11, 14, 10, 1, 5, 2, 6, 15, 14, 2, 15, 4, 1, 4, 11, 7, 6, 15, 3, 3, 4, -13, 10, -12, -11, 4, 3, 8, -10, 9, 22, -9, -8, 33, 21, 50, -7, -6, 41, 60, -5, 80])
+    a = [8, -26, 20, -24, -22, 8, 6, 16, -20, 18, 44, -18, -16, 66, 42, 100, -14, -12, 82, 120, -10, 160, -4, 13, -10, 12, 11, -4, -3, -8, 10, -9, -22, 9, 8, -33, -21, -50, 7, 6, -41, -60, 5, -80, 1, 1, 11, 14, 10, 1, 5, 2, 6, 15, 14, 2, 15, 4, 1, 4, 11, 7, 6, 15, 3, 3, 4, -13, 10, -12, -11, 4, 3, 8, -10, 9, 22, -9, -8, 33, 21, 50, -7, -6, 41, 60, -5, 80]
+    seq.append([b - 12 for b in a] + a)
+    long_list_1 = [b - 12 for b in a] + a + [b + 12 for b in a]
+    seq.append(long_list_1)
+    long_list_2 = [b - 12 for b in long_list_1] + long_list_1 + [b + 12 for b in long_list_1]
+    seq.append(long_list_2)
+    long_list_3 = long_list_2 + [b + 35 for b in long_list_1]
+    seq.append(long_list_3)
     return seq
 
 
 def get_lis(sequence, prefix=[]):
     """
-        get_lis uses recursion to get the longest increasing subsequence of an integer sequence
+    get_lis uses recursion to get the longest increasing subsequence of an integer sequence
 
     :param sequence: the sequence to find a longest increasing subsequence of
     :param prefix: prefix subsequence, used in the recursive case, for building increasing subsequences
@@ -58,8 +68,11 @@ def get_lis(sequence, prefix=[]):
             return prefix + [sequence[0]]
 
     # Look up values if they exist
-    if str(sequence) + str(prefix) in lookup.keys():
-        return lookup[str(sequence) + str(prefix)]
+    if is_present_in_lookup(prefix, sequence):
+        return get_lis_from_lookup(prefix, sequence)
+
+    if debug and len(lookup) > 10000:
+        print(f"big lookup")
 
     # Recursive cases
     if len(prefix) > 0 and sequence[0] <= prefix[-1]:
@@ -67,24 +80,87 @@ def get_lis(sequence, prefix=[]):
         # but may (but doesn't need to) start its own prefix
         lis = max([get_lis(sequence[1:], prefix),
                     get_lis(sequence[1:]),
-                    get_lis(sequence[1:], [sequence[0]])], key=len)
+                    get_lis([i for i in sequence[1:] if i > sequence[0]], [sequence[0]])], key=len)
     else:
         # the first element may (but doesn't need to) be added to the prefix
-        lis = max([get_lis(sequence[1:], prefix + [sequence[0]]),
+        lis = max([get_lis([i for i in sequence[1:] if i > sequence[0]], prefix + [sequence[0]]),
                    get_lis(sequence[1:], prefix)], key=len)
-    lookup[str(sequence) + str(prefix)] = lis
+    store_lis_in_lookup(lis, prefix, sequence)
     return lis
 
 
-def get_lis_iterative(sequence):
+def store_lis_in_lookup(lis, prefix, sequence):
+    if len(prefix) == 0:
+        lookup[key_from(prefix, sequence)] = lis
+    else:
+        lookup[key_from(prefix, sequence)] = lis[(len(prefix) - 1):]
+    # lookup[key_from(prefix, sequence)] = lis
+
+
+def get_lis_from_lookup(prefix, sequence):
+    if len(prefix) == 0:
+        return lookup[key_from(prefix, sequence)]
+    else:
+        return prefix[:-1] + lookup[key_from(prefix, sequence)]
+    # return lookup[key_from(prefix, sequence)]
+
+
+def is_present_in_lookup(prefix, sequence):
+    return key_from(prefix, sequence) in lookup.keys()
+
+
+def key_from(prefix, sequence):
+    if len(prefix) == 0:
+        return str(sequence)
+    else:
+        return str([prefix[-1]] + sequence)
+    # return str(sequence) + str(prefix)
+
+
+def get_lis_iterative(sequence, prefix=[]):
     """
-        get_lis_iterative won't use recursion to get the longest increasing subsequence of an integer sequence
+    get_lis_iterative won't use recursion to get the longest increasing subsequence of an integer sequence
+
     :param sequence:  the sequence to find a longest increasing subsequence of
     :return:
     """
-    for i in range(len(sequence), -1):
-        continue
-    return []
+    lis_stack = [(sequence, prefix)]
+    lis = []
+    candidate = []
+
+    while len(lis_stack) > 0:
+        sequence, prefix = lis_stack[-1]
+        lis_stack = lis_stack [:-1]
+
+        # Base cases
+        if len(sequence) == 0:
+            candidate = prefix
+        elif len(sequence) == 1:
+            if len(prefix) > 0 and sequence[0] <= prefix[-1]:
+                candidate = prefix
+            else:
+                candidate = prefix + [sequence[0]]
+
+        # Look up values if they exist
+        elif is_present_in_lookup(prefix, sequence):
+            continue
+            # candidate = get_lis_from_lookup(prefix, sequence)
+
+        # Recursive cases
+        elif len(prefix) > 0 and sequence[0] <= prefix[-1]:
+            # the first element is too low to be appended to the prefix,
+            # but may (but doesn't need to) start its own prefix
+            lis_stack.append((sequence[1:], prefix))
+            lis_stack.append((sequence[1:], []))
+            lis_stack.append(([i for i in sequence[1:] if i > sequence[0]], [sequence[0]]))
+        else:
+            # the first element may (but doesn't need to) be added to the prefix
+            lis_stack.append(([i for i in sequence[1:] if i > sequence[0]], prefix + [sequence[0]]))
+            lis_stack.append((sequence[1:], prefix))
+
+        lis = max(candidate, lis, key=len)
+        store_lis_in_lookup(lis, prefix, sequence)
+    return lis
 
 
 def get_prunable_indices(sequence):
@@ -106,13 +182,26 @@ def get_decreasing_steps(sequence):
     return sum([1 for i in range(len(sequence) - 1) if sequence[i] >= sequence[i+1]])
 
 
+def get_short_display(li):
+    if len(str(li)) < 80:
+        return str(li)
+    else:
+        disp = str(li)
+        return f"{disp[:55]} ... {disp[-20:]}"
+
+
 def main():
+    sys.setrecursionlimit(1500)
     if debug:
-        print(f"Test L I S algorithm")
+        print(f"Recursion limit = {sys.getrecursionlimit()}")
+
     sequences = get_sequences()
     for sequence in sequences:
         lis = get_lis(sequence)
-        print(f"Sequence: {sequence}. lis = {lis}. length of sequence = {len(sequence)}.  length of lis = {len(lis)}. decreasing steps = {get_decreasing_steps(sequence)}")
+        # lis = get_lis_iterative(sequence)
+        print(f"Sequence: {get_short_display(sequence)}. lis = {lis}. length of sequence = {len(sequence)}. length of lis = {len(lis)}. decreasing steps = {get_decreasing_steps(sequence)}")
+
+    print(f"Size of lookup = {len(lookup)}")
 
 
 if __name__ == "__main__":
