@@ -48,6 +48,9 @@ def get_sequences():
     seq.append(long_list_2)
     long_list_3 = long_list_2 + [b + 35 for b in long_list_1]
     seq.append(long_list_3)
+    seq.append([(-3 * (a * a) + 7 * a - 11) % (61*59-900) for a in range(1500)])
+    seq.append([(-3 * (a * a) + 7 * a - 11) % (61*59-900) for a in range(2000)])
+    seq.append([(-3 * (a * a) + 7 * a - 11) % (61*59-900) for a in range(2500)])
     return seq
 
 
@@ -70,9 +73,6 @@ def get_lis(sequence, prefix=[]):
     # Look up values if they exist
     if is_present_in_lookup(prefix, sequence):
         return get_lis_from_lookup(prefix, sequence)
-
-    if debug and len(lookup) > 10000:
-        print(f"big lookup")
 
     # Recursive cases
     if len(prefix) > 0 and sequence[0] <= prefix[-1]:
@@ -143,8 +143,7 @@ def get_lis_iterative(sequence, prefix=[]):
 
         # Look up values if they exist
         elif is_present_in_lookup(prefix, sequence):
-            continue
-            # candidate = get_lis_from_lookup(prefix, sequence)
+            candidate = get_lis_from_lookup(prefix, sequence)
 
         # Recursive cases
         elif len(prefix) > 0 and sequence[0] <= prefix[-1]:
@@ -159,23 +158,12 @@ def get_lis_iterative(sequence, prefix=[]):
             lis_stack.append((sequence[1:], prefix))
 
         lis = max(candidate, lis, key=len)
-        store_lis_in_lookup(lis, prefix, sequence)
+        store_lis_in_lookup(candidate, prefix, sequence)
     return lis
 
 
 def get_prunable_indices(sequence):
     return [(i, i+1) for i in range(len(sequence) - 1) if sequence[i] >= sequence[i+1]]
-
-
-def get_lis_by_pruning(sequence):
-    """
-        get_lis_by_pruning will pinch numbers out of the sequence until a longest increasing subsequence emerges
-    :param sequence: the sequence to find a longest increasing subsequence of
-    :return:
-    """
-    prunable_indices = get_prunable_indices(sequence)
-    if debug:
-        print(f"prunable indices of {sequence}: {prunable_indices}")
 
 
 def get_decreasing_steps(sequence):
@@ -197,9 +185,10 @@ def main():
 
     sequences = get_sequences()
     for sequence in sequences:
-        lis = get_lis(sequence)
-        # lis = get_lis_iterative(sequence)
-        print(f"Sequence: {get_short_display(sequence)}. lis = {lis}. length of sequence = {len(sequence)}. length of lis = {len(lis)}. decreasing steps = {get_decreasing_steps(sequence)}")
+        # lis = get_lis(sequence)
+        lis_iterative = get_lis_iterative(sequence)
+        # print(f"Sequence: {get_short_display(sequence)}. lis =           {lis}. length of sequence = {len(sequence)}. length of lis = {len(lis)}. decreasing steps = {get_decreasing_steps(sequence)}")
+        print(f"Sequence: {get_short_display(sequence)}. lis_iterative = {lis_iterative}. length of sequence = {len(sequence)}. length of lis = {len(lis_iterative)}. decreasing steps = {get_decreasing_steps(sequence)}")
 
     print(f"Size of lookup = {len(lookup)}")
 
