@@ -129,6 +129,7 @@ def get_lis_iterative(sequence, prefix=[]):
     candidate = []
 
     while len(lis_stack) > 0:
+        candidate = []
         sequence, prefix = lis_stack[-1]
         lis_stack = lis_stack [:-1]
 
@@ -157,8 +158,9 @@ def get_lis_iterative(sequence, prefix=[]):
             lis_stack.append(([i for i in sequence[1:] if i > sequence[0]], prefix + [sequence[0]]))
             lis_stack.append((sequence[1:], prefix))
 
-        lis = max(candidate, lis, key=len)
-        store_lis_in_lookup(candidate, prefix, sequence)
+        if len(candidate) > 0:
+            lis = max(candidate, lis, key=len)
+            store_lis_in_lookup(candidate, prefix, sequence)
     return lis
 
 
@@ -183,12 +185,17 @@ def main():
     if debug:
         print(f"Recursion limit = {sys.getrecursionlimit()}")
 
+    global lookup
     sequences = get_sequences()
     for sequence in sequences:
-        # lis = get_lis(sequence)
+        lookup = {}
+        start = time.time()
+        lis = get_lis(sequence)
+        print(f"Sequence: {get_short_display(sequence)}. lis =           {lis}. length of sequence = {len(sequence)}. length of lis = {len(lis)}, time taken = {time.time() - start}")
+        lookup = {}
+        start = time.time()
         lis_iterative = get_lis_iterative(sequence)
-        # print(f"Sequence: {get_short_display(sequence)}. lis =           {lis}. length of sequence = {len(sequence)}. length of lis = {len(lis)}. decreasing steps = {get_decreasing_steps(sequence)}")
-        print(f"Sequence: {get_short_display(sequence)}. lis_iterative = {lis_iterative}. length of sequence = {len(sequence)}. length of lis = {len(lis_iterative)}. decreasing steps = {get_decreasing_steps(sequence)}")
+        print(f"Sequence: {get_short_display(sequence)}. lis_iterative = {lis_iterative}. length of sequence = {len(sequence)}. length of lis = {len(lis_iterative)}, time taken = {time.time() - start}")
 
     print(f"Size of lookup = {len(lookup)}")
 
