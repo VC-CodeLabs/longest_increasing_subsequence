@@ -58,6 +58,8 @@ def get_lis(sequence, prefix=[]):
     """
     get_lis uses recursion to get the longest increasing subsequence of an integer sequence
 
+    NOTE: This one works correctly, though it hits a call stack limit on long enough sequences.
+
     :param sequence: the sequence to find a longest increasing subsequence of
     :param prefix: prefix subsequence, used in the recursive case, for building increasing subsequences
     """
@@ -121,6 +123,9 @@ def get_lis_iterative(sequence, prefix=[]):
     """
     get_lis_iterative won't use recursion to get the longest increasing subsequence of an integer sequence
 
+    NOTE Actually it just avoids using the call stack from the operating system.
+         And it is TOO SLOW. Don't use it until it's improved.
+
     :param sequence:  the sequence to find a longest increasing subsequence of
     :return:
     """
@@ -181,23 +186,42 @@ def get_short_display(li):
 
 
 def main():
-    sys.setrecursionlimit(1500)
+    global debug
+    debug = False
+
     if debug:
         print(f"Recursion limit = {sys.getrecursionlimit()}")
+        sys.setrecursionlimit(1500)
 
+    if debug:
+        run_tests()
+
+    # put input sequence here
+    input_sequence = [-10, 6, 7, 8, 1001, 80, 79, 10, 11, 1, 1000, 2, 3, -100, 4, -99, -1000, -1001, 55, 75, 8, -1, 20, 99, 100]
+
+    start = time.time()
+    output_lis = get_lis(input_sequence)
+    end = time.time()
+    print(f"{len(output_lis)}")
+    print(f"Time taken = {end - start} ms")
+    if debug:
+        print(f"lis = {output_lis}. length of sequence = {len(input_sequence)}. time taken = {(end - start) / 1} ms")
+        print(f"Time taken = {(end - start) / 1} ms")
+
+    if debug:
+        print(f"Size of lookup = {len(lookup)}")
+
+
+def run_tests():
     global lookup
     sequences = get_sequences()
     for sequence in sequences:
         lookup = {}
         start = time.time()
         lis = get_lis(sequence)
-        print(f"Sequence: {get_short_display(sequence)}. lis =           {lis}. length of sequence = {len(sequence)}. length of lis = {len(lis)}, time taken = {time.time() - start}")
+        print(
+            f"Sequence: {get_short_display(sequence)}. lis =           {lis}. length of sequence = {len(sequence)}. length of lis = {len(lis)}, time taken = {time.time() - start}")
         lookup = {}
-        start = time.time()
-        lis_iterative = get_lis_iterative(sequence)
-        print(f"Sequence: {get_short_display(sequence)}. lis_iterative = {lis_iterative}. length of sequence = {len(sequence)}. length of lis = {len(lis_iterative)}, time taken = {time.time() - start}")
-
-    print(f"Size of lookup = {len(lookup)}")
 
 
 if __name__ == "__main__":
